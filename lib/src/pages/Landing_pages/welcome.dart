@@ -1,5 +1,7 @@
-import 'package:farmmate/src/pages/Landing_pages/farmer_login/Farmer_login.dart';
+import 'package:farmmate/src/pages/Landing_pages/buyer_pages/buyer_login.dart';
 import 'package:flutter/material.dart';
+
+import 'farmer_pages/Farmer_login.dart';
 
 class welcome extends StatefulWidget {
   const welcome({super.key});
@@ -94,8 +96,8 @@ class _welcomeState extends State<welcome> {
               ),
               style: ButtonStyle(
                   elevation: WidgetStatePropertyAll(11),
-                  backgroundColor: WidgetStatePropertyAll(
-                      Color.fromRGBO(153, 184, 60, 1.0))),
+                  backgroundColor:
+                      WidgetStatePropertyAll(Color.fromRGBO(51, 114, 51, 1.0))),
             ),
           ),
           SizedBox(height: 20),
@@ -103,15 +105,21 @@ class _welcomeState extends State<welcome> {
             width: 350,
             height: 40,
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => BuyerLogin(),
+                    ));
+              },
               child: Text(
                 "Want to buy from Farmers ?",
                 style: Theme.of(context).textTheme.bodySmall,
               ),
               style: ButtonStyle(
                   elevation: WidgetStatePropertyAll(11),
-                  backgroundColor: WidgetStatePropertyAll(
-                      Color.fromRGBO(153, 184, 60, 1.0))),
+                  backgroundColor:
+                      WidgetStatePropertyAll(Color.fromRGBO(51, 114, 51, 1.0))),
             ),
           ),
         ],

@@ -29,7 +29,7 @@ class _FarmMateAppState extends State<FarmMateApp> {
               style: ButtonStyle(
                   elevation: WidgetStatePropertyAll(11),
                   backgroundColor: WidgetStatePropertyAll(
-                      Color.fromRGBO(153, 184, 60, 1.0))))),
+                      Color.fromRGBO(51, 114, 51, 1.0))))),
       debugShowCheckedModeBanner: false,
       home: welcome(),
     );

@@ -1,22 +1,24 @@
+import 'package:farmmate/src/pages/Landing_pages/buyer_pages/buyer_signup.dart';
 import 'package:flutter/material.dart';
 
-class FarmerLogin extends StatefulWidget {
-  const FarmerLogin({super.key});
+class BuyerLogin extends StatefulWidget {
+  const BuyerLogin({super.key});
 
   @override
-  State<FarmerLogin> createState() => _FarmerLoginState();
+  State<BuyerLogin> createState() => _BuyerLoginState();
 }
 
-class _FarmerLoginState extends State<FarmerLogin> {
-  final FarmerEmailLoginController = TextEditingController();
-  final FarmerPasswordLoginController = TextEditingController();
+class _BuyerLoginState extends State<BuyerLogin> {
+  final BuyerEmailLoginController = TextEditingController();
+
+  final BuyerPasswordLoginController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
           title: Text(
-            "Farmer LogIn",
+            "Buyer LogIn",
             style: TextStyle(
                 fontSize: 20,
                 fontFamily: "Poppins-SemiBold",
@@ -73,7 +75,7 @@ class _FarmerLoginState extends State<FarmerLogin> {
                       return null;
                     }
                   },
-                  controller: FarmerEmailLoginController,
+                  controller: BuyerEmailLoginController,
                 ),
               ),
               SizedBox(
@@ -112,7 +114,7 @@ class _FarmerLoginState extends State<FarmerLogin> {
                       return null;
                     }
                   },
-                  controller: FarmerPasswordLoginController,
+                  controller: BuyerPasswordLoginController,
                 ),
               ),
               SizedBox(
@@ -139,14 +141,20 @@ class _FarmerLoginState extends State<FarmerLogin> {
             children: [
               Text("Dont have an Account? "),
               InkWell(
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => BuyerSignup(),
+                      ));
+                },
                 child: Text(
                   "Sign Up",
                   style: TextStyle(color: Color.fromRGBO(51, 114, 51, 1.0)),
                 ),
               ),
             ],
-          )
+          ),
         ],
       ),
     );
