@@ -1,7 +1,10 @@
 import 'package:farmmate/src/pages/Landing_pages/welcome.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(FarmMateApp());
 }
 
@@ -22,7 +25,7 @@ class _FarmMateAppState extends State<FarmMateApp> {
                   color: Color.fromRGBO(0, 0, 0, 1.0),
                   fontFamily: "Poppins-SemiBold"),
               bodySmall: TextStyle(
-                  fontSize: 17,
+                  fontSize: 15,
                   color: Color.fromRGBO(255, 255, 255, 1.0),
                   fontFamily: "Poppins-SemiBold")),
           elevatedButtonTheme: ElevatedButtonThemeData(

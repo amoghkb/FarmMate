@@ -1,4 +1,5 @@
 import 'package:farmmate/src/pages/Landing_pages/farmer_pages/Farmer_SignUp.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class FarmerLogin extends StatefulWidget {
@@ -9,8 +10,25 @@ class FarmerLogin extends StatefulWidget {
 }
 
 class _FarmerLoginState extends State<FarmerLogin> {
+  ///controllers
   final FarmerEmailLoginController = TextEditingController();
   final FarmerPasswordLoginController = TextEditingController();
+
+  ///form key
+  final GlobalKey<FormState> farmerLoginGkey = GlobalKey<FormState>();
+
+  Future FarmerLoginWithEmailAndPass() async {
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: FarmerEmailLoginController.text.trim(),
+          password: FarmerPasswordLoginController.text.trim());
+      print("successful");
+    } on FirebaseAuthException catch (e) {
+      print(e.message.toString());
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(e.message.toString())));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,95 +57,112 @@ class _FarmerLoginState extends State<FarmerLogin> {
       body: Column(
         children: [
           Form(
+              key: farmerLoginGkey,
               child: Column(
-            children: [
-              Row(
                 children: [
+                  Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 23.0),
+                        child: Text("Email Address"),
+                      ),
+                    ],
+                  ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 23.0),
-                    child: Text("Email Address"),
+                    padding:
+                        const EdgeInsets.only(top: 10.0, left: 20, right: 20),
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(width: 1, color: Colors.grey),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(
+                              width: 1,
+                              color: Color.fromRGBO(51, 114, 51, 1.0)),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(width: 1, color: Colors.red),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(width: 1, color: Colors.red),
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Enter Email";
+                        } else {
+                          return null;
+                        }
+                      },
+                      controller: FarmerEmailLoginController,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 23.0),
+                        child: Text("Password"),
+                      ),
+                    ],
+                  ),
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(top: 10.0, left: 20, right: 20),
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(width: 1, color: Colors.grey),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(
+                              width: 1,
+                              color: Color.fromRGBO(51, 114, 51, 1.0)),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(width: 1, color: Colors.red),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(width: 1, color: Colors.red),
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Enter Password";
+                        } else {
+                          return null;
+                        }
+                      },
+                      controller: FarmerPasswordLoginController,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
                   ),
                 ],
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 10.0, left: 20, right: 20),
-                child: TextFormField(
-                  decoration: InputDecoration(
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide(width: 1, color: Colors.grey),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide(
-                          width: 1, color: Color.fromRGBO(51, 114, 51, 1.0)),
-                    ),
-                    errorBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide(width: 1, color: Colors.red),
-                    ),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Enter Email";
-                    } else {
-                      return null;
-                    }
-                  },
-                  controller: FarmerEmailLoginController,
-                ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 23.0),
-                    child: Text("Password"),
-                  ),
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 10.0, left: 20, right: 20),
-                child: TextFormField(
-                  decoration: InputDecoration(
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide(width: 1, color: Colors.grey),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide(
-                          width: 1, color: Color.fromRGBO(51, 114, 51, 1.0)),
-                    ),
-                    errorBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide(width: 1, color: Colors.red),
-                    ),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Enter Password";
-                    } else {
-                      return null;
-                    }
-                  },
-                  controller: FarmerPasswordLoginController,
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-            ],
-          )),
+              )),
           SizedBox(
               height: 40,
               width: 350,
               child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    if (farmerLoginGkey.currentState!.validate()) {
+                      FarmerLoginWithEmailAndPass();
+                    }
+                  },
                   child: Text(
-                    "LogIn",
+                    "Log In",
                     style: TextStyle(
                       color: Color.fromRGBO(255, 255, 255, 1.0),
                     ),

@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class BuyerSignup extends StatefulWidget {
@@ -8,133 +10,110 @@ class BuyerSignup extends StatefulWidget {
 }
 
 class _BuyerSignupState extends State<BuyerSignup> {
-  final BuyerEmailSignUpController = TextEditingController();
-  final BuyerPasswordSignUpController = TextEditingController();
+  final TextEditingController buyerEmailSignUpController =
+      TextEditingController();
+  final TextEditingController buyerPasswordSignUpController =
+      TextEditingController();
+  final GlobalKey<FormState> buyerSignupGkey = GlobalKey<FormState>();
+
+  Future<void> buyerSignUpWithEmailAndPass() async {
+    try {
+      UserCredential userCredential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: buyerEmailSignUpController.text.trim(),
+        password: buyerPasswordSignUpController.text.trim(),
+      );
+
+      if (userCredential.user != null) {
+        String userId = userCredential.user!.uid;
+
+        await FirebaseFirestore.instance.collection("users").doc(userId).set({
+          "email": buyerEmailSignUpController.text.trim(),
+          "role": "buyer",
+        });
+
+        print("User registered with role: buyer (UserID: $userId)");
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Buyer registered successfully!")),
+        );
+      }
+    } on FirebaseAuthException catch (e) {
+      print("Firebase Auth Error: ${e.message}");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.message.toString())),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text(
-            "Buyer SignUp",
-            style: TextStyle(
-                fontSize: 20,
-                fontFamily: "Poppins-SemiBold",
-                color: Color.fromRGBO(0, 0, 0, 1.0)),
-          ),
-          centerTitle: true,
-          leading: Builder(
-            builder: (context) {
-              return IconButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  icon: Icon(
-                    Icons.arrow_back_outlined,
-                    color: Color.fromRGBO(0, 0, 0, 1.0),
-                  ));
-            },
-          )),
-      body: Column(
-        children: [
-          Form(
-              child: Column(
+        title: const Text("Buyer SignUp",
+            style: TextStyle(fontSize: 20, fontFamily: "Poppins-SemiBold")),
+        centerTitle: true,
+        leading: IconButton(
+          onPressed: () => Navigator.pop(context),
+          icon: const Icon(Icons.arrow_back_outlined),
+        ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Form(
+          key: buyerSignupGkey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 23.0),
-                    child: Text("Email Address"),
-                  ),
-                ],
+              const Text("Email Address"),
+              const SizedBox(height: 10),
+              TextFormField(
+                controller: buyerEmailSignUpController,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10)),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Enter Email";
+                  }
+                  return null;
+                },
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 10.0, left: 20, right: 20),
-                child: TextFormField(
-                  decoration: InputDecoration(
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide(width: 1, color: Colors.grey),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide(
-                          width: 1, color: Color.fromRGBO(51, 114, 51, 1.0)),
-                    ),
-                    errorBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide(width: 1, color: Colors.red),
-                    ),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Enter Email";
-                    } else {
-                      return null;
+              const SizedBox(height: 20),
+              const Text("Password"),
+              const SizedBox(height: 10),
+              TextFormField(
+                controller: buyerPasswordSignUpController,
+                obscureText: true,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10)),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Enter Password";
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 20),
+              SizedBox(
+                height: 40,
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () async {
+                    if (buyerSignupGkey.currentState!.validate()) {
+                      await buyerSignUpWithEmailAndPass();
                     }
                   },
-                  controller: BuyerEmailSignUpController,
+                  child: const Text("Sign Up",
+                      style: TextStyle(color: Colors.white)),
                 ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 23.0),
-                    child: Text("Password"),
-                  ),
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 10.0, left: 20, right: 20),
-                child: TextFormField(
-                  decoration: InputDecoration(
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide(width: 1, color: Colors.grey),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide(
-                          width: 1, color: Color.fromRGBO(51, 114, 51, 1.0)),
-                    ),
-                    errorBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide(width: 1, color: Colors.red),
-                    ),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Enter Password";
-                    } else {
-                      return null;
-                    }
-                  },
-                  controller: BuyerPasswordSignUpController,
-                ),
-              ),
-              SizedBox(
-                height: 20,
               ),
             ],
-          )),
-          SizedBox(
-              height: 40,
-              width: 350,
-              child: ElevatedButton(
-                  onPressed: () {},
-                  child: Text(
-                    "Sign Up",
-                    style: TextStyle(
-                      color: Color.fromRGBO(255, 255, 255, 1.0),
-                    ),
-                  ))),
-          SizedBox(
-            height: 20,
           ),
-        ],
+        ),
       ),
     );
   }
