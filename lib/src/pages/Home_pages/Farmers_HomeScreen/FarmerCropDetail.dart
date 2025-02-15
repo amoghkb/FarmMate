@@ -42,16 +42,18 @@ class _FarmercropdetailcropState extends State<Farmercropdetailcrop> {
             padding: const EdgeInsets.all(20),
             child: ListView(
               children: [
-                _detailRow("Product Name :", widget.crop['product'] ?? "N/A"),
+                _detailRow("Crop Name :", widget.crop['product'] ?? "N/A"),
+                _detailRow("Farmer Name :", widget.crop['FarmerName'] ?? "N/A"),
                 _detailRow(
-                    "Rating:", widget.crop['rating']?.toString() ?? "N/A"),
+                    "Phone Number :", widget.crop['phoneNumber'] ?? "N/A"),
+                _detailRow("Product Name :", widget.crop['product'] ?? "N/A"),
                 _detailRow("Availability:",
                     widget.crop['availability']?.toString() ?? "N/A"),
                 _detailRow("Cost Per Kg :",
                     widget.crop['costPerKg']?.toString() ?? "N/A"),
                 _detailRow("Price is :", widget.crop['PriceType'] ?? "N/A"),
                 _detailRow(
-                    "Phone Number :", widget.crop['phoneNumber'] ?? "N/A"),
+                    "Rating:", widget.crop['rating']?.toString() ?? "N/A"),
                 _detailRow(
                     "Harvest Date :", widget.crop['harvestDate'] ?? "N/A"),
                 _detailRow("Expiry Date :", widget.crop['expiryDate'] ?? "N/A"),

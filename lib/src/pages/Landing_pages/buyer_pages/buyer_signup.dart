@@ -58,60 +58,104 @@ class _BuyerSignupState extends State<BuyerSignup> {
           icon: const Icon(Icons.arrow_back_outlined),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Form(
-          key: buyerSignupGkey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text("Email Address"),
-              const SizedBox(height: 10),
-              TextFormField(
-                controller: buyerEmailSignUpController,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10)),
+      resizeToAvoidBottomInset: true,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Form(
+            key: buyerSignupGkey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  height: 400,
+                  width: 400,
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage("assets/images/2.png"),
+                          fit: BoxFit.cover)),
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Enter Email";
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 20),
-              const Text("Password"),
-              const SizedBox(height: 10),
-              TextFormField(
-                controller: buyerPasswordSignUpController,
-                obscureText: true,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10)),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Enter Password";
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 20),
-              SizedBox(
-                height: 40,
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () async {
-                    if (buyerSignupGkey.currentState!.validate()) {
-                      await buyerSignUpWithEmailAndPass();
+                const Text("Email Address"),
+                const SizedBox(height: 10),
+                TextFormField(
+                  controller: buyerEmailSignUpController,
+                  decoration: InputDecoration(
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide(width: 1, color: Colors.grey),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide(
+                          width: 1, color: Color.fromRGBO(51, 114, 51, 1.0)),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide(width: 1, color: Colors.red),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide(width: 1, color: Colors.red),
+                    ),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Enter Email";
                     }
+                    return null;
                   },
-                  child: const Text("Sign Up",
-                      style: TextStyle(color: Colors.white)),
                 ),
-              ),
-            ],
+                const SizedBox(height: 20),
+                const Text("Password"),
+                const SizedBox(height: 10),
+                TextFormField(
+                  controller: buyerPasswordSignUpController,
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide(width: 1, color: Colors.grey),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide(
+                          width: 1, color: Color.fromRGBO(51, 114, 51, 1.0)),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide(width: 1, color: Colors.red),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide(width: 1, color: Colors.red),
+                    ),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Enter Password";
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 20),
+                SizedBox(
+                  height: 40,
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      if (buyerSignupGkey.currentState!.validate()) {
+                        await buyerSignUpWithEmailAndPass();
+                        buyerEmailSignUpController.clear();
+                        buyerPasswordSignUpController.clear();
+                        Navigator.pop(context);
+                      }
+                    },
+                    child: const Text("Sign Up",
+                        style: TextStyle(color: Colors.white)),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
